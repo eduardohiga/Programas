@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+int main(){
+	int lin, cont = 0, n, aux1, aux2;
+
+	printf("Insira o numero de linhas: ");
+	scanf("%d", &lin);
+
+	//"Funcao1" imprime a escada.
+
+	aux1 = lin;    //aux1 e uma variavel auxiliar para armazenar o valor de lin e fazer operacoes com ele, assim o valor inicial de lin nao e alerado.
+ 
+	for (aux1; aux1 >= 0; aux1--){     /*determina o número de espacos a serem dados (que começa igual ao numero de linhas e decresce).*/
+		for (n = aux1; n > 0; n--){    //rotina para imprimir o numero de espacos definidos. Quando termina, o numero de espacos (aux1) é diminuido em 1.
+			printf(" ");               //imprime um espaco n vezes.
+		}
+
+		cont = cont + 1;               //cont é um contador para saber o numeo de * a serem imprimidos. A cada vez q complea uma iteracao do for exerno, icrementa em 1, pois a cada linha o numero de * aumenta em 1.
+		aux2 = cont;                   //aux2 é uma variavel auxiliar para armazenar o valor de cont em cada determinada iteracao. Se usasse o valor de cont direto, o seu valor ia ser sempre 1, pois dentro do while ele diminui até 0.
+
+		while (aux2 > 0){              //roina para imprimir *.
+			printf("*");
+			aux2--;
+		}
+		
+		printf("\n");
+	}	
+	
+	//fim da "Funcao1"
+	
+	printf("\n\n\n");                  //pula 3 linhas.
+
+	//"Funcao2" imprime a piramide.
+	
+	aux1 = lin;                       //resetando o valor de aux1 para o mesmo valor de lin.
+	cont = -1;                        //cont inicia em -1 pois agora, a cada linha, deve-se aumentar em 2 o numero de *, e, para imprimir apenas 1 na primeira, -1 deve ser o valor de cont.
+
+	for (aux1; aux1 >= 0; aux1--){    //determina o número de espacos a serem dados (que começa igual ao numero de linhas e decresce).
+		for (n = aux1; n >=0; n--){   //rotina para imprimir o numero de espacos definidos. Quando termina, o numero de espacos (aux1) é diminuido em 1.
+			printf(" ");
+		}
+
+		cont = cont + 2;              //soma-se 2 pois a cada linha há mais 2 *.
+		aux2 = cont;                  //aux2 é uma variavel auxiliar para armazenar o valor de cont em cada determinada iteracao. Se usasse o valor de cont direto, o seu valor ia ser sempre 2, pois dentro do while ele diminui até 0.
+
+		while (aux2 > 0){             //roina para imprimir *.
+			printf("*");
+			aux2--;
+		}
+
+		printf("\n");
+
+	}
+	
+	system("PAUSE");
+	return(0);
+}
