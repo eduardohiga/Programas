@@ -1,0 +1,56 @@
+//Codigo JS para interface com Azure IoT usando MQTT
+
+//------------
+//Referencia de protocolo que iremos usar - mqtt
+var Protocol = require('azure-iot-device-mqtt').Mqtt;
+
+//referencia para objeto cliente para conexao
+var Client = require('azure-iot-device').Client;
+
+//Referencia para objeto de troca de mensagens
+var Message = require('azure-iot-device').Message;
+
+//String de conexao com Azure IoT Hub
+var connectionString = 'HostName=iotsenc.azure-devices.net;DeviceId=iot_senc_device;SharedAccessKey=dTFGn2MddaiYnv+BhSyIFqbM2A2pH26Ya6QKVG2jx84=';
+
+//Criacao de objeto cliente para acesso ao Hub com Protocolo
+var iot_client = Client.fromConnectionString(connectionString, Protocol);
+
+//Chamada para print de resultados de operacao - deu certo ou errado
+function printResultFor(op){
+	return function printResult(err, res){
+		if(err) console.log(op + 'error: ' + err.toString());
+		if(err) console.log(op + 'status: ' + res.constructor.name);
+	};
+}
+
+
+//Callback de conexao para envio/recebimento de mensagens
+var connectCallBack = function (err){
+	if(err){
+		console.log('Falha na conexao: ' + err);
+	}else{
+		console.log('Conexao OK');
+		iot_client.on('message', function(msg){	
+			console.log('Id ' + msg.messageId + 'Body ' + msg.data);
+			iot_client.complete(msg, printfResultFor('completed'));		
+		});
+		
+		setInterval(function(){
+			var temperature = 20 + (Math.random()*15);
+			var humidity = 60 + (Math.random()*20);
+			var data = JSON.stringify({
+				deviceId: 'iot-emu-101',
+				temperature: temperature,
+				humidity: humidity,
+				timeFlag: new Date()
+				});
+			
+			var message = new Message(data);
+			console.log('Enviando mensagem: ' + message.getData());
+			iot_client.sendEvent(message, printResultFor('send'));
+		}, 1000); //periodo	
+	}
+}
+
+iot_client.open(connectCallBack);
